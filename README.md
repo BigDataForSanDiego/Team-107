@@ -8,8 +8,8 @@
 
 #### Team Members `Glitchood - glitchood, Derek Ying - wertiop1, Praneel Kona - kopthekid, Owen Mao - prey3rk`
 
-#### Your teamâ€™s hackathon idea in One sentence:
-##### `YOUR ONE SENTENCE HERE`
+#### Your team's hackathon idea in One sentence:
+##### `A housing retention system which analyzes client surveys to support them through their housing programs and prevent them from falling back into homelessness.`
 
 #### A visual
 ![bigdatahackathon4sd](https://github.com/BigDataForSanDiego/bigdataforsandiego.github.io/blob/main/images/big_data_2025_clip.png?raw=true "Big Data Hackathon for San Diego 2025")
@@ -18,7 +18,7 @@
 
 
 #### Hackathon Five CORE Themes. `CHECK ONE or TWO QUESTIONS (insert X in [ ])`.
-- [X] Access to Shelter and Resources
+- [ ] Access to Shelter and Resources
 > - Solutions to improve on-demand access and availability of shelters, food banks, medical aid, and social services for homeless individuals.
 > - Question: How can we develop technological solutions that provide real-time, on-demand information updates on available shelters, food banks, hygiene stations, medical clinics, and social services for people experiencing homelessness?
 - [ ] Health and Mental Wellness Support
@@ -27,7 +27,7 @@
 - [ ] Housing and Employment Pathways
 > - Web platforms that connect homeless individuals to affordable housing opportunities, job training programs, or employment resources.
 > - Question: What digital web platforms or systems can help individuals experiencing homelessness navigate the path toward stable housing and employment, including skills training, job placement, and housing referrals? 
-- [X] Safety and Community Engagement
+- [ ] Safety and Community Engagement
 > - Solutions to increase personal safety, prevent violence, and foster community support and empathy networks for homeless people.
 > - Question: How might we design technological solutions that improve safety for unhoused individuals, reduce violence, and build empathy and community support through storytelling, social engagement, or civic partnerships?
 - [ ] Data-Driven Policy and User-Centered Resource Planning
