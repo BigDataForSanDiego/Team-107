@@ -54,7 +54,33 @@ router.post("/api/clients", (req, res) => {
  *         description: Unauthorized
  */
 router.delete("/api/clients/me", (req, res) => {
-  res.sendStatus(401);
+  res.sendStatus(200);
+});
+
+/**
+ * @swagger
+ * /api/clients/me:
+ *   get:
+ *     summary: Get Client's dashboard
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Got Client's dashboard
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dashboard:
+ *                   type: string
+ *                   example: placeholder for the dashboard object
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/api/clients/me", (req, res) => {
+  res.json({ dashboard: "placeholder for the dashboard object" });
 });
 
 module.exports = router;
