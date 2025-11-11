@@ -39,5 +39,22 @@ router.post("/api/login", (req, res) => {
   res.json({ token: "client1234token" });
 });
 
+/**
+ * @swagger
+ * /api/logout:
+ *   post:
+ *     summary: Log out of account
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/api/logout", (req, res) => {
+  res.sendStatus(401);
+});
 
 module.exports = router;
