@@ -1,7 +1,7 @@
 ![AnchorPointLogo](./AnchorPointLogo.png)
 > A housing retention system which analyzes client surveys to support them through their housing programs and prevent them from falling back into homelessness.
 
-# 2025 BIG DATA HACKATHON
+## 2025 BIG DATA HACKATHON
 
 ## Team 107: `Mr. Gerry Mandering`    
 
