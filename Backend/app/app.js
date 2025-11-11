@@ -42,5 +42,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(authRoutes);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`🚀 Launched on http://localhost:${port}`)
+  console.log(`📝 API Docs at http://localhost:${port}/api-docs`)
+
 })
