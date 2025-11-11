@@ -54,7 +54,7 @@ router.post("/api/login", (req, res) => {
  *         description: Unauthorized
  */
 router.post("/api/logout", (req, res) => {
-  res.sendStatus(401);
+  res.sendStatus(200);
 });
 
 module.exports = router;
