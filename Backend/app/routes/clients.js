@@ -39,4 +39,22 @@ router.post("/api/clients", (req, res) => {
   res.json({ clientId: 1234 });
 });
 
+/**
+ * @swagger
+ * /api/clients/me:
+ *   delete:
+ *     summary: Delete Client account
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully deleted Client
+ *       401:
+ *         description: Unauthorized
+ */
+router.delete("/api/clients/me", (req, res) => {
+  res.sendStatus(401);
+});
+
 module.exports = router;
