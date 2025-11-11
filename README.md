@@ -1,4 +1,4 @@
-![AnchorPointLogo](./AnchorPointLogo.png)
+![AnchorPointLogo](./img/AnchorPointLogo.png)
 > A housing retention system which analyzes client surveys to support them through their housing programs and prevent them from falling back into homelessness.
 
 ## 2025 BIG DATA HACKATHON
@@ -16,7 +16,7 @@ Praneel Kona - `kopthekid`
 Owen Mao - `prey3rk`
 
 ## Flowchart
-<kbd><img src="./flowchart.png"></img></kbd>
+<kbd><img src="./img/flowchart.png"></img></kbd>
 
 #### Our Two Hackathon Themes:
 - [X] Health and Mental Wellness Support
