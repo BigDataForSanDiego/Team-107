@@ -21,6 +21,15 @@ const swaggerOptions = {
             version: "1.0.0",
             description: "API for the AnchorPoint application.",
         },
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: "http",
+              scheme: "bearer",
+              bearerFormat: "JWT",
+            },
+          },
+        },
     },
     apis: [path.join(__dirname, "routes/*.js")], // absolute path based on this file
 };
