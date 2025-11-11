@@ -9,7 +9,7 @@ const port = 3000;
 app.use(express.json());
 
 // Import routes
-// const clientRoutes = require("./routes/clients");
+const clientRoutes = require("./routes/clients");
 const authRoutes = require("./routes/auth");
 
 // Swagger setup
@@ -38,7 +38,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Use routes
-// app.use(clientRoutes);
+app.use(clientRoutes);
 app.use(authRoutes);
 
 app.listen(port, () => {
