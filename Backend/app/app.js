@@ -1,6 +1,7 @@
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const path = require("path")
 
 // Init app
 const app = express();
@@ -21,7 +22,7 @@ const swaggerOptions = {
             description: "API for the AnchorPoint application.",
         },
     },
-    apis: ["./routes/*.js"], // Scan route files
+    apis: [path.join(__dirname, "routes/*.js")], // absolute path based on this file
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
