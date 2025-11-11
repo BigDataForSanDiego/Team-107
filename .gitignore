@@ -1,3 +1,7 @@
+# VSCode
+.vscode/
+swagger.yml
+
 # Logs
 logs
 *.log
@@ -110,6 +114,7 @@ dist
 
 # Serverless directories
 .serverless/
+
 
 # FuseBox cache
 .fusebox/
