@@ -48,7 +48,7 @@ router.post("/api/clients", (req, res) => {
  *     security:
  *       - bearerAuth: []
  *     responses:
- *       200:
+ *       204:
  *         description: Successfully deleted Client
  *       401:
  *         description: Unauthorized
