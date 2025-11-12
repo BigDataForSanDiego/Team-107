@@ -11,7 +11,7 @@ app.use(express.json());
 // Import routes
 const authRoutes = require("./routes/auth");
 const clientRoutes = require("./routes/clients");
-const coordinatorRoutes = require("./routes/clients");
+const coordinatorRoutes = require("./routes/coordinators");
 
 // Swagger setup
 const swaggerOptions = {
