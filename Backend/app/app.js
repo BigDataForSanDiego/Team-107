@@ -7,15 +7,13 @@ const cors = require("cors");
 // Init app
 const app = express();
 const port = 3000;
-app.use(cors{
-  origin: 'http://localhost:5173',
-  methods: "GET,DELETE,POST"
-})
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "DELETE", "POST"],
+  })
+);
 app.use(express.json());
-
-
-
-
 
 // Import routes
 const authRoutes = require("./routes/auth");
