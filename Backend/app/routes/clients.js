@@ -36,7 +36,7 @@ const router = express.Router();
  *                   example: 1234
  */
 router.post("/api/clients", (req, res) => {
-  res.json({ clientId: 1234 });
+  res.status(201).json({ clientId: 1234 });
 });
 
 /**
@@ -54,7 +54,7 @@ router.post("/api/clients", (req, res) => {
  *         description: Unauthorized
  */
 router.delete("/api/clients/me", (req, res) => {
-  res.sendStatus(200);
+  res.sendStatus(204);
 });
 
 /**
@@ -207,23 +207,23 @@ router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
 
 /**
  * @swagger
- * /api/coordinators/{coordinatorId}/contact:
+ * /api/clients/{clientId}/contact:
  *   get:
- *     summary: Contact Client's coordinator
+ *     summary: Contact Coordinator's Client by ID
  *     tags: [Coordinators]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: coordinatorId
+ *       - name: clientId
  *         in: path
  *         required: true
- *         description: Numeric ID of Coordinator
+ *         description: Numeric ID of Client
  *         schema:
  *           type: integer
  *           example: 5678
  *     responses:
  *       200:
- *         description: Contacted Client's coordinator
+ *         description: Contacted Coordinator's Client
  *         content:
  *           application/json:
  *             schema:
@@ -235,7 +235,9 @@ router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/coordinators/:coordinatorId/contact", (req, res) => {
+router.get("/api/clients/:clientId/contact", (req, res) => {
+  const { clientId } = req.params;
   res.json({ contact: "123-456-7890" });
 });
+
 module.exports = router;
