@@ -1,8 +1,26 @@
+const { startMongoDB } = require("./startMongo");
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
+
+startMongoDB();
+
+// Connect Mongoose (wait a bit to let mongod start)
+const MONGO_URI = "mongodb://127.0.0.1:27017/database";
+
+async function connectDB() {
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+  }
+}
+
+connectDB();
 
 // Init app
 const app = express();
