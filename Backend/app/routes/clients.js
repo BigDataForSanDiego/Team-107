@@ -111,4 +111,47 @@ router.get("/api/clients/me/surveys", (req, res) => {
   res.json({ surveys: [8, 9] });
 });
 
+/**
+ * @swagger
+ * /api/clients/me/surveys/{surveyId}:
+ *   get:
+ *     summary: Get Client's survey by ID
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: surveyId
+ *         in: path
+ *         required: true
+ *         description: Numeric ID of the survey
+ *         schema:
+ *           type: integer
+ *           example: 8
+ *     responses:
+ *       200:
+ *         description: Got survey
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 submitted:
+ *                   type: boolean
+ *                   example: true
+ *                 questions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                   example: ["Question1", "Question2", "Question3"]
+ *                 responses:
+ *                   type: array
+ *                   example: ["Answer1", 100, "Answer3"]
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
+  const { surveyId } = req.params;
+  res.json({ submitted: true, questions: ["Question1", "Question2", "Question3"], responses: ["Answer1", 100, "Asnwer3"] });
+});
+
 module.exports = router;
