@@ -24,7 +24,7 @@ const router = express.Router();
  *                 type: string
  *                 example: 456password456
  *     responses:
- *       200:
+ *       201:
  *         description: Successfully created Coordinator
  *         content:
  *           application/json:
@@ -36,7 +36,7 @@ const router = express.Router();
  *                   example: 5678
  */
 router.post("/api/coordinators", (req, res) => {
-  res.json({ coordinatorId: 5678 });
+  res.status(201).json({ coordinatorId: 5678 });
 });
 
 /**
@@ -54,7 +54,42 @@ router.post("/api/coordinators", (req, res) => {
  *         description: Unauthorized
  */
 router.delete("/api/coordinators/me", (req, res) => {
-  res.sendStatus(401);
+  res.sendStatus(204);
+});
+
+/**
+ * @swagger
+ * /api/coordinators/{coordinatorId}/contact:
+ *   get:
+ *     summary: Contact Client's Coordinator by ID
+ *     tags: [Coordinators]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: coordinatorId
+ *         in: path
+ *         required: true
+ *         description: Numeric ID of Coordinator
+ *         schema:
+ *           type: integer
+ *           example: 5678
+ *     responses:
+ *       200:
+ *         description: Contacted Client's coordinator
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 contact:
+ *                   type: string
+ *                   example: "123-456-7890"
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/api/coordinators/:coordinatorId/contact", (req, res) => {
+  const { coordinatorId } = req.params;
+  res.json({ contact: "123-456-7890" });
 });
 
 module.exports = router;
