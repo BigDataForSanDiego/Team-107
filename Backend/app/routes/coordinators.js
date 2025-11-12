@@ -48,7 +48,7 @@ router.post("/api/coordinators", (req, res) => {
  *     security:
  *       - bearerAuth: []
  *     responses:
- *       200:
+ *       204:
  *         description: Successfully deleted Coordinator
  *       401:
  *         description: Unauthorized
