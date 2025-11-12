@@ -1,5 +1,16 @@
 # VSCode
 .vscode/
+
+#MacOS
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+*.DS_Store
+
+#Swap
+*.swp
+
 # Logs
 logs
 *.log

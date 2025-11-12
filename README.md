@@ -24,4 +24,4 @@ Owen Mao - `prey3rk`
 > - Question: How can we create tools or mobile applications that deliver remote mental health care, help manage chronic health conditions, or connect unhoused individuals with trusted health professionals?
 - [X] Housing and Employment Pathways
 > - Web platforms that connect homeless individuals to affordable housing opportunities, job training programs, or employment resources.
-> - Question: What digital web platforms or systems can help individuals experiencing homelessness navigate the path toward stable housing and employment, including skills training, job placement, and housing referrals? 
+> - Question: What digital web platforms or systems can help individuals experiencing homelessness navigate the path toward stable housing and employment, including skills training, job placement, and housing referrals?
