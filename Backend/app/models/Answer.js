@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const responseSchema = new mongoose.Schema({
+const answerSchema = new mongoose.Schema({
     surveyId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Number,
         required: true,
         ref: 'Survey'
     },
@@ -14,4 +14,6 @@ const responseSchema = new mongoose.Schema({
     }
 });
 
-const Response = mongoose.model('Response', responseSchema);
+const Answer = mongoose.model('Answer', answerSchema);
+
+module.exports = Answer;
