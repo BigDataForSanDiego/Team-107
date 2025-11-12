@@ -121,7 +121,7 @@ router.get("/api/coordinators/:coordinatorId/contact", (req, res) => {
  *                 type: integer
  *                 example: 5
  *     responses:
- *       200:
+ *       201:
  *         description: Successfully assigned survey
  *       401:
  *         description: Unauthorized
