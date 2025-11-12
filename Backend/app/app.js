@@ -2,11 +2,20 @@ const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const path = require("path");
+const cors = require("cors");
 
 // Init app
 const app = express();
 const port = 3000;
+app.use(cors{
+  origin: 'http://localhost:5173',
+  methods: "GET,DELETE,POST"
+})
 app.use(express.json());
+
+
+
+
 
 // Import routes
 const authRoutes = require("./routes/auth");
