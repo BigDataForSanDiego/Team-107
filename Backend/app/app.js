@@ -15,12 +15,14 @@ async function connectDB() {
   try {
     await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB");
+    app.listen(port, () => {
+      console.log(`🚀 Launched on http://localhost:${port}`);
+      console.log(`📝 API Docs at http://localhost:${port}/api-docs`);
+    });
   } catch (err) {
     console.error("MongoDB connection error:", err);
   }
-}
-
-connectDB();
+};
 
 // Init app
 const app = express();
@@ -68,7 +70,4 @@ app.use(authRoutes);
 app.use(clientRoutes);
 app.use(coordinatorRoutes);
 
-app.listen(port, () => {
-  console.log(`🚀 Launched on http://localhost:${port}`);
-  console.log(`📝 API Docs at http://localhost:${port}/api-docs`);
-});
+connectDB();
