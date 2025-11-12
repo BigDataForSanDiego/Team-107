@@ -127,7 +127,7 @@ router.get("/api/clients/:clientId/contact", (req, res) => {
  *         description: Unauthorized
  */
 router.post("/api/clients/:clientId/surveys", (req, res) => {
-  res.sendStatus(200);
+  res.sendStatus(201);
 });
 
 /**
@@ -267,7 +267,7 @@ router.get("/api/clients/:clientId/surveys", (req, res) => {
  *                   items:
  *                     type: string
  *                   example: ["Question1", "Question2", "Question3"]
- *                 responses:
+ *                 response:
  *                   type: array
  *                   items:
  *                     oneOf:
@@ -281,7 +281,7 @@ router.get("/api/clients/:clientId/surveys/:surveyId", (req, res) => {
   res.json({
     submitted: true,
     questions: ["Question1", "Question2", "Question3"],
-    responses: ["Answer1", 100, "Answer3"],
+    response: ["Answer1", 100, "Answer3"],
   });
 });
 
