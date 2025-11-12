@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 const answerSchema = new mongoose.Schema({
+    /*clientId:{
+        type: Number,
+        required: true,
+    },*/
     surveyId: {
         type: Number,
         required: true,
-        ref: 'Survey'
     },
     //store answers as json object
     answers: Object,
