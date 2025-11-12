@@ -151,7 +151,50 @@ router.get("/api/clients/me/surveys", (req, res) => {
  */
 router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
   const { surveyId } = req.params;
-  res.json({ submitted: true, questions: ["Question1", "Question2", "Question3"], responses: ["Answer1", 100, "Asnwer3"] });
+  res.json({
+    submitted: true,
+    questions: ["Question1", "Question2", "Question3"],
+    responses: ["Answer1", 100, "Asnwer3"],
+  });
+});
+
+/**
+ * @swagger
+ * /api/clients/me/surveys/{surveyId}/responses:
+ *   post:
+ *     summary: Add Client's response to survey by ID
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: surveyId
+ *         in: path
+ *         required: true
+ *         description: Numeric ID of the survey
+ *         schema:
+ *           type: integer
+ *           example: 8
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - response
+ *             properties:
+ *               response:
+ *                 type: array
+ *                 example: ["Answer1", 100, "Answer3"]
+ *     responses:
+ *       200:
+ *         description: Successfully saved response
+ *       401:
+ *         description: Unauthorized
+ */
+router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
+  const { surveyId } = req.params;
+  res.sendStatus(200);
 });
 
 module.exports = router;
