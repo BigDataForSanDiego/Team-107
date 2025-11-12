@@ -176,18 +176,20 @@ router.get("/api/clients", (req, res) => {
  *           example: 1234
  *     responses:
  *       200:
- *         description: Client profile data
+ *         description: Got Client's dashboard
  *         content:
  *           application/json:
  *             schema:
  *               type: object
- *               example: { "username": "JohnDoe", "clientId": 1234 }
+ *               properties:
+ *                 dashboard:
+ *                   type: string
+ *                   example: placeholder for the dashboard object
  *       401:
  *         description: Unauthorized
  */
 router.get("/api/clients/:clientId", (req, res) => {
-  const { clientId } = req.params;
-  res.json({ username: "JohnDoe", clientId: parseInt(clientId) });
+  res.json({ dashboard: "placeholder for the dashboard object" });
 });
 
 /**
