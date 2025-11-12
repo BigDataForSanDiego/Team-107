@@ -207,23 +207,23 @@ router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
 
 /**
  * @swagger
- * /api/clients/{clientId}/contact:
+ * /api/coordinators/{coordinatorId}/contact:
  *   get:
- *     summary: Contact Coordinator's Client by ID
+ *     summary: Contact Client's Coordinator by ID
  *     tags: [Coordinators]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: clientId
+ *       - name: coordinatorId
  *         in: path
  *         required: true
- *         description: Numeric ID of Client
+ *         description: Numeric ID of Coordinator
  *         schema:
  *           type: integer
- *           example: 1234
+ *           example: 5678
  *     responses:
  *       200:
- *         description: Contacted Coordinator's Client
+ *         description: Contacted Client's coordinator
  *         content:
  *           application/json:
  *             schema:
@@ -235,8 +235,8 @@ router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients/:clientId/contact", (req, res) => {
-  const { clientId } = req.params;
+router.get("/api/coordinators/:coordinatorId/contact", (req, res) => {
+  const { coordinatorId } = req.params;
   res.json({ contact: "123-456-7890" });
 });
 
