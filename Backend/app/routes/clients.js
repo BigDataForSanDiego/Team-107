@@ -164,7 +164,7 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
 
 /**
  * @swagger
- * /api/clients/me/surveys/{surveyId}/responses:
+ * /api/clients/me/surveys/{surveyId}/answers:
  *   post:
  *     summary: Send Client's response to survey by ID
  *     tags: [Clients]
@@ -200,7 +200,7 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
+router.post("/api/clients/me/surveys/:surveyId/answers", (req, res) => {
   const { surveyId } = req.params;
   res.sendStatus(200);
 });
