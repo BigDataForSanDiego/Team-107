@@ -162,7 +162,7 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  * @swagger
  * /api/clients/me/surveys/{surveyId}/responses:
  *   post:
- *     summary: Add Client's response to survey by ID
+ *     summary: Send Client's response to survey by ID
  *     tags: [Clients]
  *     security:
  *       - bearerAuth: []
@@ -188,7 +188,7 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  *                 example: ["Answer1", 100, "Answer3"]
  *     responses:
  *       200:
- *         description: Successfully saved response
+ *         description: Successfully sent response
  *       401:
  *         description: Unauthorized
  */
@@ -197,4 +197,29 @@ router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
   res.sendStatus(200);
 });
 
+/**
+ * @swagger
+ * /api/coordinators/{coordinatorId}/contact:
+ *   get:
+ *     summary: Contact Client's coordinator
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Contacted Client's coordinator
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 contact:
+ *                   type: string
+ *                   example: "123-456-7890"
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/api/coordinators/:coordinatorId/contact", (req, res) => {
+  res.json({ contact: "123-456-7890" });
+});
 module.exports = router;
