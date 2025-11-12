@@ -59,23 +59,23 @@ router.delete("/api/coordinators/me", (req, res) => {
 
 /**
  * @swagger
- * /api/coordinators/{coordinatorId}/contact:
+ * /api/clients/{clientId}/contact:
  *   get:
- *     summary: Contact Client's Coordinator by ID
+ *     summary: Contact Coordinator's Client by ID
  *     tags: [Coordinators]
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - name: coordinatorId
+ *       - name: clientId
  *         in: path
  *         required: true
- *         description: Numeric ID of Coordinator
+ *         description: Numeric ID of Client
  *         schema:
  *           type: integer
- *           example: 5678
+ *           example: 1234
  *     responses:
  *       200:
- *         description: Contacted Client's coordinator
+ *         description: Contacted Coordinator's Client
  *         content:
  *           application/json:
  *             schema:
@@ -87,8 +87,8 @@ router.delete("/api/coordinators/me", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/coordinators/:coordinatorId/contact", (req, res) => {
-  const { coordinatorId } = req.params;
+router.get("/api/clients/:clientId/contact", (req, res) => {
+  const { clientId } = req.params;
   res.json({ contact: "123-456-7890" });
 });
 
