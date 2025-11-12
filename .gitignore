@@ -1,6 +1,16 @@
 # VSCode
 .vscode/
 
+#MacOS
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+*.DS_Store
+
+#Swap
+*.swp
+
 # Logs
 logs
 *.log
@@ -114,10 +124,6 @@ dist
 # Serverless directories
 .serverless/
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/Frontend
 # FuseBox cache
 .fusebox/
 
@@ -145,8 +151,4 @@ dist
 # Vite files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-<<<<<<< HEAD
 .vite/
-=======
-.vite/
->>>>>>> origin/Frontend
