@@ -220,7 +220,7 @@ router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
  *         description: Numeric ID of Client
  *         schema:
  *           type: integer
- *           example: 5678
+ *           example: 1234
  *     responses:
  *       200:
  *         description: Contacted Coordinator's Client
