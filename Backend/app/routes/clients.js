@@ -103,12 +103,12 @@ router.get("/api/clients/me", (req, res) => {
  *                   type: array
  *                   items:
  *                     type: integer
- *                   example: [5, 6, 7]
+ *                   example: [8, 9]
  *       401:
  *         description: Unauthorized
  */
 router.get("/api/clients/me/surveys", (req, res) => {
-  res.json({ surveys: [5, 6, 7] });
+  res.json({ surveys: [8, 9] });
 });
 
 module.exports = router;
