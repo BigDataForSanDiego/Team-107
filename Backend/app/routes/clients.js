@@ -1,4 +1,5 @@
 const express = require("express");
+const store_answer = require("../crud")
 const router = express.Router();
 
 /**
@@ -155,10 +156,11 @@ router.get("/api/clients/me/surveys", (req, res) => {
  */
 router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
   const { surveyId } = req.params;
+  
   res.json({
     submitted: true,
     questions: ["Question1", "Question2", "Question3"],
-    response: ["Answer1", 100, "Answer3"],
+    response: answers,
   });
 });
 
@@ -166,7 +168,7 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  * @swagger
  * /api/clients/me/surveys/{surveyId}/answers:
  *   post:
- *     summary: Send Client's response to survey by ID
+ *     summary: Send Client's answer to survey by ID
  *     tags: [Clients]
  *     security:
  *       - bearerAuth: []
@@ -185,9 +187,9 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  *           schema:
  *             type: object
  *             required:
- *               - response
+ *               - answer
  *             properties:
- *               response:
+ *               answer:
  *                 type: array
  *                 items:
  *                   oneOf:
@@ -200,10 +202,14 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.post("/api/clients/me/surveys/:surveyId/answers", (req, res) => {
-  const { surveyId } = req.params;
-  
-  res.sendStatus(200);
+router.post("/api/clients/me/surveys/:surveyId/answers", async (req, res) => {
+  try{
+    const savedAnswer = await store_answer(req);
+    res.status(201).json({ message: 'Response saved successfully', response: savedAnswer });
+  } catch(error){
+    console.error("Save error:", error);
+    res.status(500).json({error: 'Error fetching responses'})
+  }
 });
 
 /**

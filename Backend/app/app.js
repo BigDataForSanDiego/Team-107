@@ -9,7 +9,7 @@ const cors = require("cors");
 startMongoDB();
 
 // Connect Mongoose (wait a bit to let mongod start)
-const MONGO_URI = "mongodb://127.0.0.1:27017/database";
+const MONGO_URI = "mongodb://127.0.0.1:27017/surveys";
 
 async function connectDB() {
   try {
