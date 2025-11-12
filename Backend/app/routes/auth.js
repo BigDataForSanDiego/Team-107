@@ -1,5 +1,11 @@
 const express = require("express");
+//const bodyParser = require('body-parser');
+//const jwt = require('jsonwebtoken');
 const router = express.Router();
+
+
+// Secret key for JWT (keep this safe in env variables!)
+//const SECRET_KEY = "supersecretkey123";
 
 /**
  * @swagger

@@ -1,5 +1,5 @@
 const express = require("express");
-const store_answer = require("../crud")
+const {store_answer, create_user} = require("../crud");
 const router = express.Router();
 
 /**
@@ -36,8 +36,15 @@ const router = express.Router();
  *                   type: integer
  *                   example: 1234
  */
-router.post("/api/clients", (req, res) => {
-  res.status(201).json({ clientId: 1234 });
+router.post("/api/clients", async (req, res) => {
+  try {
+    console.log("creating user");
+    const savedUser = await create_user(req);
+    console.log("user created");
+    res.status(201).json({ user: savedUser });
+  } catch(error){
+    res.status(404).json({ error: error.message });
+  }
 });
 
 /**
@@ -156,7 +163,7 @@ router.get("/api/clients/me/surveys", (req, res) => {
  */
 router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
   const { surveyId } = req.params;
-  
+
   res.json({
     submitted: true,
     questions: ["Question1", "Question2", "Question3"],
