@@ -31,9 +31,9 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 clientId:
- *                   type: integer
- *                   example: 1234
+ *                 token:
+ *                   type: string
+ *                   example: client1234token
  */
 router.post("/api/login", (req, res) => {
   res.json({ token: "client1234token" });
@@ -54,7 +54,7 @@ router.post("/api/login", (req, res) => {
  *         description: Unauthorized
  */
 router.post("/api/logout", (req, res) => {
-  res.sendStatus(401);
+  res.sendStatus(200);
 });
 
 module.exports = router;
