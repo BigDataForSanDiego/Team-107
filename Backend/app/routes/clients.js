@@ -24,7 +24,7 @@ const router = express.Router();
  *                 type: string
  *                 example: 123password123
  *     responses:
- *       200:
+ *       201:
  *         description: Successfully created Client
  *         content:
  *           application/json:
@@ -143,8 +143,12 @@ router.get("/api/clients/me/surveys", (req, res) => {
  *                   items:
  *                     type: string
  *                   example: ["Question1", "Question2", "Question3"]
- *                 responses:
+ *                 response:
  *                   type: array
+ *                   items:
+ *                     oneOf:
+ *                       - type: string
+ *                       - type: integer
  *                   example: ["Answer1", 100, "Answer3"]
  *       401:
  *         description: Unauthorized
@@ -154,7 +158,7 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
   res.json({
     submitted: true,
     questions: ["Question1", "Question2", "Question3"],
-    responses: ["Answer1", 100, "Asnwer3"],
+    response: ["Answer1", 100, "Answer3"],
   });
 });
 
@@ -185,6 +189,10 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  *             properties:
  *               response:
  *                 type: array
+ *                 items:
+ *                   oneOf:
+ *                     - type: string
+ *                     - type: integer
  *                 example: ["Answer1", 100, "Answer3"]
  *     responses:
  *       200:
@@ -202,9 +210,17 @@ router.post("/api/clients/me/surveys/:surveyId/responses", (req, res) => {
  * /api/coordinators/{coordinatorId}/contact:
  *   get:
  *     summary: Contact Client's coordinator
- *     tags: [Clients]
+ *     tags: [Coordinators]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - name: coordinatorId
+ *         in: path
+ *         required: true
+ *         description: Numeric ID of Coordinator
+ *         schema:
+ *           type: integer
+ *           example: 5678
  *     responses:
  *       200:
  *         description: Contacted Client's coordinator
