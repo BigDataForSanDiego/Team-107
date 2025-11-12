@@ -202,6 +202,7 @@ router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
  */
 router.post("/api/clients/me/surveys/:surveyId/answers", (req, res) => {
   const { surveyId } = req.params;
+  
   res.sendStatus(200);
 });
 
