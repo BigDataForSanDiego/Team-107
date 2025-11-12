@@ -83,4 +83,32 @@ router.get("/api/clients/me", (req, res) => {
   res.json({ dashboard: "placeholder for the dashboard object" });
 });
 
+/**
+ * @swagger
+ * /api/clients/me/surveys:
+ *   get:
+ *     summary: Get Client's surveys
+ *     tags: [Clients]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Got Client's surveys
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 surveys:
+ *                   type: array
+ *                   items:
+ *                     type: integer
+ *                   example: [5, 6, 7]
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/api/clients/me/surveys", (req, res) => {
+  res.json({ surveys: [5, 6, 7] });
+});
+
 module.exports = router;
