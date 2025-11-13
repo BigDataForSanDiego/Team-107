@@ -26,13 +26,4 @@ async function create_user(req){
     }
 }
 
-/*async function delete_user(req){
-    const body = req.body;
-    const username = body.username;
-    const users = await User.find({username: username });
-    if (users.length == 0){
-        throw new Error('User does not exist');
-    }
-}*/
-
 module.exports = {store_answer, create_user};
