@@ -1,5 +1,6 @@
 const express = require("express");
 const {store_answer, create_user} = require("../crud");
+const Dashboard = require("../models/Dashboard")
 const router = express.Router();
 
 /**
@@ -38,9 +39,7 @@ const router = express.Router();
  */
 router.post("/api/clients", async (req, res) => {
   try {
-    console.log("creating user");
     const savedUser = await create_user(req);
-    console.log("user created");
     res.status(201).json({ user: savedUser });
   } catch(error){
     res.status(404).json({ error: error.message });
