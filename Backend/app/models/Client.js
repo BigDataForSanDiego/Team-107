@@ -12,12 +12,16 @@ const clientSchema = new mongoose.Schema({
         required: true
     },
     coordinator: {
-        type: Number,
+        type: String,
         default: null
     },
     surveys: {
         type: Array,
         default: []
+    },
+    contact: {
+        type: String,
+        default: "contact"
     }
 });
 

@@ -1,6 +1,7 @@
 const Answer = require("./models/Answer");
 const Client = require("./models/Client");
 const Dashboard = require("./models/Dashboard");
+const Coordinator = require("./models/Coordinator")
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 //const Counter = require("./models/Counter");
@@ -26,13 +27,13 @@ async function store_answer(req){
     }
 }
 
-async function create_user(req){
+async function create_client(req){
     const body = req.body;
     const username = body.username;
     const users = await Client.findOne({username: username });
     if(!users){
         const password = body.password;
-        const newClient = new Client({username, password})
+        const newClient = new Client({username, password});
         const savedClient = newClient.save();
         const clientDashboard = new Dashboard({clientId: newClient._id});
         const newDashboard = clientDashboard.save();
@@ -40,6 +41,21 @@ async function create_user(req){
     }
     else{
         throw new Error('Client already exists');
+    }
+}
+
+async function create_coordinator(req){
+    const body = req.body;
+    const username = body.username;
+    const users = await Coordinator.findOne({username: username});
+    if(!users){
+        const password = body.password;
+        const newCoordinator = new Coordinator({username, password});
+        const savedCoordinator = newCoordinator.save();
+        return savedCoordinator;
+    }
+    else{
+        throw new Error('Coordinator already exists');
     }
 }
 
@@ -55,7 +71,7 @@ function getClientIdFromToken(req, res) {
       resolve(decoded.userId);
     });
   });
-}
+};
 
 async function delete_client(req, res){
     const id = await getClientIdFromToken(req, res);
@@ -64,4 +80,4 @@ async function delete_client(req, res){
     return deletedClient;
 }
 
-module.exports = {store_answer, create_user, getClientIdFromToken, delete_client};
+module.exports = {store_answer, create_client, getClientIdFromToken, delete_client, create_coordinator};

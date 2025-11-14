@@ -1,8 +1,9 @@
 const express = require("express");
-const {store_answer, create_user, getClientIdFromToken, delete_client} = require("../crud");
+const {store_answer, create_client, getClientIdFromToken, delete_client} = require("../crud");
 const Dashboard = require("../models/Dashboard");
 const Answer = require("../models/Answer");
 const Client = require("../models/Client");
+const Coordinator = require("../models/Coordinator");
 const mongoose = require("mongoose");
 const router = express.Router();
 
@@ -45,7 +46,7 @@ const router = express.Router();
  */
 router.post("/api/clients", async (req, res) => {
   try {
-    const {savedUser, clientDashboard} = await create_user(req);
+    const {savedUser, clientDashboard} = await create_client(req);
     res.status(201).json({ message:"Client Created", user: savedUser, dashboard: clientDashboard });
   } catch(error){
     res.status(404).json({ error: error.message });
@@ -248,20 +249,12 @@ router.post("/api/clients/me/surveys/:surveyId/answers", async (req, res) => {
 
 /**
  * @swagger
- * /api/coordinators/{coordinatorId}/contact:
+ * /api/clients/me/contact:
  *   get:
- *     summary: Contact Client's Coordinator by ID
- *     tags: [Coordinators]
+ *     summary: Get own coordinator contact
+ *     tags: [Clients]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - name: coordinatorId
- *         in: path
- *         required: true
- *         description: Numeric ID of Coordinator
- *         schema:
- *           type: integer
- *           example: 5678
  *     responses:
  *       200:
  *         description: Contacted Client's coordinator
@@ -276,9 +269,17 @@ router.post("/api/clients/me/surveys/:surveyId/answers", async (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/coordinators/:coordinatorId/contact", (req, res) => {
-  const { coordinatorId } = req.params;
-  res.json({ contact: "123-456-7890" });
+router.get("/api/clients/me/contact", async (req, res) => {
+  try {
+    const clientId = await getClientIdFromToken(req, res);
+    const client = await Client.findById(clientId);
+    const coordinatorId = client.coordinator;
+    const coordinator = await Coordinator.findById(coordinatorId);
+    const contact = coordinator.contact;
+    res.json({ message: "Fetched coordinator contact", contact: contact });
+  } catch(error){
+    res.status(500).json({message: "Failed to get coordinator contact", error: error})
+  }
 });
 
 module.exports = router;
