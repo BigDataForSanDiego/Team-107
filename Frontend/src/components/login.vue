@@ -22,7 +22,7 @@
 
 <script>
   export default {
-    name: 'clientLogin',
+    name: 'LoginScreen',
     data() {
       return {
         input:{

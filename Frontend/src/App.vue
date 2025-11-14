@@ -1,15 +1,15 @@
 <template>
 
-  <clientLogin/>
+  <LoginScreen/>
 </template>
 
 <script>
-  import clientLogin from './client/login.vue'
+  import LoginScreen from './components/login.vue'
 
   export default{
     name: 'App',
     components: {
-      clientLogin 
+      LoginScreen 
     }
   }
 </script>
