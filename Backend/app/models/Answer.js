@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
-const responseSchema = new mongoose.Schema({
-    surveyId: {
-        type: mongoose.Schema.Types.ObjectId,
+const answerSchema = new mongoose.Schema({
+    clientId:{
+        type: String,
         required: true,
-        ref: 'Survey'
+    },
+    surveyId: {
+        type: Number,
+        required: true,
     },
     //store answers as json object
     answers: Object,
@@ -14,4 +17,6 @@ const responseSchema = new mongoose.Schema({
     }
 });
 
-const Response = mongoose.model('Response', responseSchema);
+const Answer = mongoose.model('Surveys', answerSchema);
+
+module.exports = Answer;
