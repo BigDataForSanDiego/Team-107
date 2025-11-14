@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const dashboardSchema = new mongoose.Schema({
-    user: {
+    clientId: {
         type: String,
         required: true,
         unique: true
@@ -36,6 +36,6 @@ const dashboardSchema = new mongoose.Schema({
     }
 });
 
-const Dashboard = mongoose.model('Dasboard', dashboardSchema);
+const Dashboard = mongoose.model('Dashboard', dashboardSchema);
 
 module.exports = Dashboard;
