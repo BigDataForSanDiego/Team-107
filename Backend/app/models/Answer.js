@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const answerSchema = new mongoose.Schema({
-    /*clientId:{
-        type: Number,
+    clientId:{
+        type: String,
         required: true,
-    },*/
+    },
     surveyId: {
         type: Number,
         required: true,
@@ -17,6 +17,6 @@ const answerSchema = new mongoose.Schema({
     }
 });
 
-const Answer = mongoose.model('Answer', answerSchema);
+const Answer = mongoose.model('Surveys', answerSchema);
 
 module.exports = Answer;

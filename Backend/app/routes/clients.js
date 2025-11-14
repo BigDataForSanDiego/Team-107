@@ -1,6 +1,8 @@
 const express = require("express");
-const {store_answer, create_user} = require("../crud");
-const Dashboard = require("../models/Dashboard")
+const {store_answer, create_user, getClientIdFromToken, delete_client} = require("../crud");
+const Dashboard = require("../models/Dashboard");
+const Answer = require("../models/Answer");
+const mongoose = require("mongoose");
 const router = express.Router();
 
 /**
@@ -33,14 +35,17 @@ const router = express.Router();
  *             schema:
  *               type: object
  *               properties:
- *                 clientId:
- *                   type: integer
- *                   example: 1234
+ *                 user:
+ *                   type: object
+ *                   example: user1234
+ *                 dashboard:
+ *                   type: object
+ *                   example: dashboard1234
  */
 router.post("/api/clients", async (req, res) => {
   try {
-    const savedUser = await create_user(req);
-    res.status(201).json({ user: savedUser });
+    const {savedUser, clientDashboard} = await create_user(req);
+    res.status(201).json({ message:"Client Created", user: savedUser, dashboard: clientDashboard });
   } catch(error){
     res.status(404).json({ error: error.message });
   }
@@ -58,10 +63,15 @@ router.post("/api/clients", async (req, res) => {
  *       204:
  *         description: Successfully deleted Client
  *       401:
- *         description: Unauthorized
+ *         description: Deletion Failed
  */
-router.delete("/api/clients/me", (req, res) => {
-  res.sendStatus(204);
+router.delete("/api/clients/me", async (req, res) => {
+  try {
+    const deletedClient = await delete_client(req, res);
+    res.status(204).json({ message:"Client Deleted", client: deletedClient});
+  } catch (err){
+    res.status(401).json({ message: "Deletion Failed", error: err.message});
+  }
 });
 
 /**
@@ -83,11 +93,17 @@ router.delete("/api/clients/me", (req, res) => {
  *                 dashboard:
  *                   type: string
  *                   example: placeholder for the dashboard object
- *       401:
- *         description: Unauthorized
+ *       500:
+ *         description: Dashoboard not found
  */
-router.get("/api/clients/me", (req, res) => {
-  res.json({ dashboard: "placeholder for the dashboard object" });
+router.get("/api/clients/me", async (req, res) => {
+  try {
+    const id = await getClientIdFromToken(req, res);
+    const clientDashboard = await Dashboard.findOne({clientId: id});
+    res.json({ dashboard: clientDashboard });
+  } catch(err){
+    res.status(500).json({ message: "Dashboard not found", error: err.message});
+  }
 });
 
 /**
@@ -114,8 +130,15 @@ router.get("/api/clients/me", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients/me/surveys", (req, res) => {
-  res.json({ surveys: [8, 9] });
+router.get("/api/clients/me/surveys", async (req, res) => {
+  try {
+    const id = await getClientIdFromToken(req, res);
+    const client = await Client.findById(id);
+    const surveys = client.surveys;
+    res.json({surveys: surveys});
+  } catch(err){
+    res.status(500).json({message: "Surveys not found", error: err.message});
+  }
 });
 
 /**
@@ -160,14 +183,18 @@ router.get("/api/clients/me/surveys", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients/me/surveys/:surveyId", (req, res) => {
-  const { surveyId } = req.params;
-
-  res.json({
-    submitted: true,
-    questions: ["Question1", "Question2", "Question3"],
-    response: answers,
-  });
+router.get("/api/clients/me/surveys/:surveyId", async (req, res) => {
+  try {
+    const { surveyId } = req.params;
+    const survey = await Answer.findOne({surveyId: surveyId})
+    res.json({
+      submitted: true,
+      questions: ["Question1", "Question2", "Question3"],
+      response: survey.answers,
+    });
+  }catch(err){
+    res.status(500).json({message: "Survey not found", error: err.message});
+  }
 });
 
 /**
