@@ -2,11 +2,11 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
-const User = require("../models/User");
-//const bodyParser = require('body-parser');
-//const jwt = require('jsonwebtoken');
+const Client = require("../models/Client");
+const {store_answer, create_user} = require("../crud");
 const router = express.Router();
 dotenv.config();
+
 
 /**
  * @swagger
@@ -41,25 +41,35 @@ dotenv.config();
  *                 token:
  *                   type: string
  *                   example: client1234token
+ *       500:
+ *         description: Login Failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: error  
  */
 router.post("/api/login", async (req, res) => {
   try {
     const {username, password} = req.body;
-    const user = await User.findOne({username: username});
-    if(!user) return res.status(400).json({message: "Invalid username"});
-    console.log(password);
-    console.log(user.password);
-    const isMatch = await bcrypt.compare(password, user.password);
+    const client = await Client.findOne({username: username});
+    if(!client) return res.status(400).json({message: "Invalid username"});
+    //console.log(password);
+    //console.log(client.password);
+    const isMatch = await bcrypt.compare(password, client.password);
     if(!isMatch) return res.status(400).json({message: "Incorrect password"});
 
     const token = jwt.sign(
-      {userId: user._id, username: user.username}, 
+      {userId: client._id.toString(), username: client.username}, 
       process.env.JWT_SECRET, 
       {expiresIn: "24h"}
     );
-    res.json({ token, user: { id: user._id, username: user.username}});
+    res.status(200).json({ token: token});
   } catch (err){
-    res.status(500).json({ message: "Login Failed", error: err.message});
+    res.status(500).json({ error: err.message});
   }
 });
 
@@ -77,8 +87,7 @@ router.post("/api/login", async (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.post("/api/logout", (req, res) => {
-  res.status(200);
+router.post("/api/logout", async (req, res) => {
 });
 
 module.exports = router;
