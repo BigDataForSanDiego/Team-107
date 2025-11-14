@@ -2,6 +2,7 @@ const express = require("express");
 const {store_answer, create_user, getClientIdFromToken, delete_client} = require("../crud");
 const Dashboard = require("../models/Dashboard");
 const Answer = require("../models/Answer");
+const Client = require("../models/Client");
 const mongoose = require("mongoose");
 const router = express.Router();
 
