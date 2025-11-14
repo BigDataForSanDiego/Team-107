@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 const Client = require("../models/Client");
-const {store_answer, create_user} = require("../crud");
+const Coordinator = require("../models/Coordinator")
+const {store_answer} = require("../crud");
 const router = express.Router();
 dotenv.config();
 
@@ -23,6 +24,7 @@ dotenv.config();
  *             required:
  *               - username
  *               - password
+ *               - accountType
  *             properties:
  *               username:
  *                 type: string
@@ -30,6 +32,9 @@ dotenv.config();
  *               password:
  *                 type: string
  *                 example: 123password123
+ *               accountType:
+ *                 type: Number
+ *                 example: 0
  *     responses:
  *       200:
  *         description: Successfully logged in
@@ -54,19 +59,35 @@ dotenv.config();
  */
 router.post("/api/login", async (req, res) => {
   try {
-    const {username, password} = req.body;
-    const client = await Client.findOne({username: username});
-    if(!client) return res.status(400).json({message: "Invalid username"});
-    //console.log(password);
-    //console.log(client.password);
-    const isMatch = await bcrypt.compare(password, client.password);
-    if(!isMatch) return res.status(400).json({message: "Incorrect password"});
+    const {username, password, accountType} = req.body;
+    let token = null;
+    if(accountType == 0){
+      const client = await Client.findOne({username: username});
+      if(!client) return res.status(400).json({message: "Invalid username"});
+      //console.log(password);
+      //console.log(client.password);
+      const isMatch = await bcrypt.compare(password, client.password);
+      if(!isMatch) return res.status(400).json({message: "Incorrect password"});
 
-    const token = jwt.sign(
-      {userId: client._id.toString(), username: client.username}, 
-      process.env.JWT_SECRET, 
-      {expiresIn: "24h"}
-    );
+      token = jwt.sign(
+        {userId: client._id.toString(), username: client.username}, 
+        process.env.JWT_SECRET, 
+        {expiresIn: "24h"}
+      );
+    }
+    else{
+      const coordinator = await Coordinator.findOne({username: username});
+      if(!coordinator) return res.status(400).json({message: "Invalid username"});
+      //console.log(password);
+      //console.log(client.password);
+      const isMatch = await bcrypt.compare(password, coordinator.password);
+      if(!isMatch) return res.status(400).json({message: "Incorrect password"});
+      token = jwt.sign(
+        {userId: coordinator._id.toString(), username: coordinator.username}, 
+        process.env.JWT_SECRET, 
+        {expiresIn: "24h"}
+      );
+    }
     res.status(200).json({ token: token});
   } catch (err){
     res.status(500).json({ error: err.message});

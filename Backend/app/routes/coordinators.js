@@ -1,4 +1,11 @@
 const express = require("express");
+const {create_coordinator, getClientIdFromToken} = require("../crud");
+const Dashboard = require("../models/Dashboard");
+const Answer = require("../models/Answer");
+const Client = require("../models/Client");
+const Coordinator = require("../models/Coordinator");
+const mongoose = require("mongoose");
+const Survey = require("../models/Survey");
 const router = express.Router();
 
 /**
@@ -32,11 +39,16 @@ const router = express.Router();
  *               type: object
  *               properties:
  *                 coordinatorId:
- *                   type: integer
- *                   example: 5678
+ *                   type: object
+ *                   example: coordinator5678
  */
-router.post("/api/coordinators", (req, res) => {
-  res.status(201).json({ coordinatorId: 5678 });
+router.post("/api/coordinators", async (req, res) => {
+try {
+    const coordinator = await create_coordinator(req);
+    res.status(201).json({ message:"Client Created", user: coordinator });
+  } catch(error){
+    res.status(404).json({ error: error.message });
+  }
 });
 
 /**
@@ -59,6 +71,42 @@ router.delete("/api/coordinators/me", (req, res) => {
 
 /**
  * @swagger
+ * /api/clients/{clientId}/assign:
+ *   post:
+ *     summary: Assign client to coordinator
+ *     tags: [Coordinators]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: clientId
+ *         in: path
+ *         required: true
+ *         description: Object ID of Client
+ *         schema:
+ *           type: string
+ *           example: 69169f834df755e5a6726f0c
+ *     responses:
+ *       204:
+ *         description: Successfully assigned client
+ *       401: 
+ *         description: unauthorized
+ */
+router.post("/api/clients/:clientId/assign", async (req, res) => {
+  try{
+    const coordinatorId = await getClientIdFromToken(req, res);
+    const { clientId } = req.params;
+    const updatedClient = await Client.findByIdAndUpdate(
+      clientId,
+      {coordinator: coordinatorId}
+    );
+    res.status(204).json({message: "coordinator assigned", client: updatedClient});
+  }catch(err){
+    res.status(401).json({message: "error assignging client", error: err});
+  }
+});
+
+/**
+ * @swagger
  * /api/clients/{clientId}/contact:
  *   get:
  *     summary: Contact Coordinator's Client by ID
@@ -69,10 +117,10 @@ router.delete("/api/coordinators/me", (req, res) => {
  *       - name: clientId
  *         in: path
  *         required: true
- *         description: Numeric ID of Client
+ *         description: Object ID of Client
  *         schema:
- *           type: integer
- *           example: 1234
+ *           type: string
+ *           example: 69169f834df755e5a6726f0c
  *     responses:
  *       200:
  *         description: Contacted Coordinator's Client
@@ -87,9 +135,11 @@ router.delete("/api/coordinators/me", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients/:clientId/contact", (req, res) => {
+router.get("/api/clients/:clientId/contact", async (req, res) => {
   const { clientId } = req.params;
-  res.json({ contact: "123-456-7890" });
+  const client = await Client.findById(clientId);
+  const contact = client.contact;
+  res.json({ contact: contact });
 });
 
 /**
@@ -154,8 +204,15 @@ router.post("/api/clients/:clientId/surveys", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients", (req, res) => {
-  res.json({ clients: [1234, 5678] });
+router.get("/api/clients", async (req, res) => {
+  try {  
+    const coordinatorId = await getClientIdFromToken(req);
+    const clients = await Client.find({coordinator: coordinatorId});
+    const clientIds = clients.map(client => client._id);
+    res.status(200).json({clients: clientIds});
+  } catch(error){
+    res.status(401).json({message:"Failed to retrieve clients"});
+  }
 });
 
 /**
@@ -169,11 +226,10 @@ router.get("/api/clients", (req, res) => {
  *     parameters:
  *       - name: clientId
  *         in: path
- *         required: true
- *         description: Numeric ID of the Client
+ *         description: Object ID of the client
  *         schema:
- *           type: integer
- *           example: 1234
+ *           type: String
+ *           example: 6916d11dab082902b0db7801
  *     responses:
  *       200:
  *         description: Got Client's dashboard
@@ -188,8 +244,14 @@ router.get("/api/clients", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients/:clientId", (req, res) => {
-  res.json({ dashboard: "placeholder for the dashboard object" });
+router.get("/api/clients/:clientId", async (req, res) => {
+  try {
+    const {clientId} = req.params;
+    const dashboard = await Dashboard.findOne({clientId: clientId});
+    res.status(200).json({dashboard: dashboard});
+  } catch(error){
+    res.status(401).json({message:"Failed to retrieve clients"});
+  }
 });
 
 /**
@@ -203,11 +265,10 @@ router.get("/api/clients/:clientId", (req, res) => {
  *     parameters:
  *       - name: clientId
  *         in: path
- *         required: true
  *         description: Numeric ID of the Client
  *         schema:
- *           type: integer
- *           example: 1234
+ *           type: string
+ *           example: 6916d11dab082902b0db7801
  *     responses:
  *       200:
  *         description: A list of survey IDs for the client
@@ -224,8 +285,15 @@ router.get("/api/clients/:clientId", (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients/:clientId/surveys", (req, res) => {
-  res.json({ surveys: [8, 9] });
+router.get("/api/clients/:clientId/surveys", async (req, res) => {
+  try {
+    const {clientId} = req.params;
+    const client = await Client.findById(clientId);
+    const surveys = client.surveys;
+    res.status(200).json({surveys: surveys});
+  } catch(err){
+    res.status(500).json({message: "Surveys not found", error: err.message});
+  }
 });
 
 /**
@@ -315,14 +383,22 @@ router.get("/api/clients/:clientId/surveys/:surveyId", (req, res) => {
  *             schema:
  *               type: object
  *               properties:
- *                 surveyId:
- *                   type: integer
- *                   example: 10
+ *                 survey:
+ *                   type: object
+ *                   example: idk a survey lol
  *       401:
  *         description: Unauthorized
  */
 router.post("/api/surveys", (req, res) => {
-  res.status(201).json({ surveyId: 10 });
+  try{
+    const body = req.body;
+    const questions = body.questions;
+    const survey = new Survey({questions});
+    const newSurvey = survey.save();
+    res.status(201).json({message: "Survey created", survey: survey});
+  }catch(error){
+    res.status(401).json({message: "Failed to create survey"});
+  }
 });
 
 module.exports = router;
