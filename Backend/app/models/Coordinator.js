@@ -15,9 +15,9 @@ const coordinatorSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    clients: {
-        type: Array,
-        default: []
+    contact: {
+        type: String,
+        default: "contact"
     }
 });
 
@@ -29,6 +29,6 @@ coordinatorSchema.pre("save", async function (next) {
   next();
 });
 
-const Coordinator = mongoose.model('User', coordinatorSchema);
+const Coordinator = mongoose.model('Coordinator', coordinatorSchema);
 
 module.exports = Coordinator;
