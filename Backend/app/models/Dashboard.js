@@ -29,6 +29,10 @@ const dashboardSchema = new mongoose.Schema({
     selfDevelopment: {
         type: Number,
         default: null
+    },
+    timestamp: {
+        type: Date,
+        default: Date.now
     }
 });
 

@@ -80,4 +80,15 @@ async function delete_client(req, res){
     return deletedClient;
 }
 
-module.exports = {store_answer, create_client, getClientIdFromToken, delete_client, create_coordinator};
+async function delete_coordinator(req, res){
+    const id = await getClientIdFromToken(req, res);
+    const clients = await Client.find({coordinator: id});
+    for(const client of clients){
+        client.coordinator = null;
+        await client.save();
+    }
+    const deletedCoordinator = await Coordinator.findOneAndDelete({_id: id});
+    return deletedCoordinator;
+}
+
+module.exports = {store_answer, create_client, getClientIdFromToken, delete_client, create_coordinator, delete_coordinator};
