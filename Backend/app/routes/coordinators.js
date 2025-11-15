@@ -76,32 +76,36 @@ router.delete("/api/coordinators/me", async (req, res) => {
 
 /**
  * @swagger
- * /api/clients/{clientId}/assign:
+ * /api/clients/assign:
  *   post:
  *     summary: Assign client to coordinator
  *     tags: [Coordinators]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - name: clientId
- *         in: path
- *         required: true
- *         description: Object ID of Client
- *         schema:
- *           type: string
- *           example: 69169f834df755e5a6726f0c
+*     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - clientName
+ *             properties:
+ *               clientName:
+ *                 type: string
+ *                 example: "JohnDoe"
  *     responses:
  *       204:
  *         description: Successfully assigned client
  *       401: 
  *         description: unauthorized
  */
-router.post("/api/clients/:clientId/assign", async (req, res) => {
+router.post("/api/clients/assign", async (req, res) => {
   try{
     const coordinatorId = await getClientIdFromToken(req, res);
-    const { clientId } = req.params;
-    const updatedClient = await Client.findByIdAndUpdate(
-      clientId,
+    const clientName = req.body.clientName;
+    const updatedClient = await Client.findOneAndUpdate(
+      {username: clientName},
       {coordinator: coordinatorId}
     );
     res.status(204).json({message: "coordinator assigned", client: updatedClient});
@@ -149,44 +153,6 @@ router.get("/api/clients/:clientId/contact", async (req, res) => {
 
 /**
  * @swagger
- * /api/clients/{clientId}/surveys:
- *   post:
- *     summary: Manually assign extra survey
- *     tags: [Coordinators]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: clientId
- *         in: path
- *         required: true
- *         description: Numeric ID of the Client
- *         schema:
- *           type: integer
- *           example: 1234
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - surveyId
- *             properties:
- *               surveyId:
- *                 type: integer
- *                 example: 5
- *     responses:
- *       201:
- *         description: Successfully assigned survey
- *       401:
- *         description: Unauthorized
- */
-router.post("/api/clients/:clientId/surveys", (req, res) => {
-  res.sendStatus(201);
-});
-
-/**
- * @swagger
  * /api/clients:
  *   get:
  *     summary: View all Clients
@@ -212,9 +178,14 @@ router.post("/api/clients/:clientId/surveys", (req, res) => {
 router.get("/api/clients", async (req, res) => {
   try {  
     const coordinatorId = await getClientIdFromToken(req);
-    const clients = await Client.find({coordinator: coordinatorId});
-    const clientIds = clients.map(client => client._id);
-    res.status(200).json({clients: clientIds});
+    const clients = await Client.find(
+      { coordinator: coordinatorId }
+    );
+    const clientsWithNames = clients.map(client => ({
+      username: client.username,
+      id: client._id
+    }));
+    res.status(200).json({clients: clientsWithNames});
   } catch(error){
     res.status(401).json({message:"Failed to retrieve clients"});
   }
@@ -313,9 +284,9 @@ router.get("/api/clients/:clientId/surveys", async (req, res) => {
  *       - name: clientId
  *         in: path
  *         required: true
- *         description: Numeric ID of the Client
+ *         description: Object ID of the Client
  *         schema:
- *           type: integer
+ *           type: string
  *           example: 1234
  *       - name: surveyId
  *         in: path
@@ -350,12 +321,14 @@ router.get("/api/clients/:clientId/surveys", async (req, res) => {
  *       401:
  *         description: Unauthorized
  */
-router.get("/api/clients/:clientId/surveys/:surveyId", (req, res) => {
-  res.json({
-    submitted: true,
-    questions: ["Question1", "Question2", "Question3"],
-    response: ["Answer1", 100, "Answer3"],
-  });
+router.get("/api/clients/:clientId/surveys/:surveyId", async (req, res) => {
+  try {
+    const {clientId, surveyId} = req.params;
+    const survey = await Answer.findOne({surveyId: surveyId});
+    res.status(200).json({survey: survey});
+  } catch(err){
+    res.status(401).json({message: "Failed to fetch survey", error: err.message});
+  }
 });
 
 /**
@@ -373,8 +346,16 @@ router.get("/api/clients/:clientId/surveys/:surveyId", (req, res) => {
  *           schema:
  *             type: object
  *             required:
+ *               - surveyName
+ *               - description
  *               - questions
  *             properties:
+ *               surveyName:
+ *                 type: string
+ *                 example: "My Survey"
+ *               description:
+ *                 type: string
+ *                 example: "Survey for me!"
  *               questions:
  *                 type: array
  *                 items:
@@ -398,7 +379,9 @@ router.post("/api/surveys", (req, res) => {
   try{
     const body = req.body;
     const questions = body.questions;
-    const survey = new Survey({questions});
+    const surveyName = body.surveyName;
+    const description = body.description;
+    const survey = new Survey({surveyName, description, questions});
     const newSurvey = survey.save();
     res.status(201).json({message: "Survey created", survey: survey});
   }catch(error){

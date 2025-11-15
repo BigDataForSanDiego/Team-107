@@ -5,6 +5,7 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
+const dotenv = require("dotenv");
 
 startMongoDB();
 

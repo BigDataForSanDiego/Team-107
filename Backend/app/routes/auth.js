@@ -33,8 +33,8 @@ dotenv.config();
  *                 type: string
  *                 example: 123password123
  *               accountType:
- *                 type: Number
- *                 example: 0
+ *                 type: String
+ *                 example: Client
  *     responses:
  *       200:
  *         description: Successfully logged in
@@ -61,7 +61,7 @@ router.post("/api/login", async (req, res) => {
   try {
     const {username, password, accountType} = req.body;
     let token = null;
-    if(accountType == 0){
+    if(accountType == "Client"){
       const client = await Client.findOne({username: username});
       if(!client) return res.status(400).json({message: "Invalid username"});
       //console.log(password);
@@ -75,7 +75,7 @@ router.post("/api/login", async (req, res) => {
         {expiresIn: "24h"}
       );
     }
-    else{
+    else if (accountType == "Coordinator"){
       const coordinator = await Coordinator.findOne({username: username});
       if(!coordinator) return res.status(400).json({message: "Invalid username"});
       //console.log(password);
@@ -87,6 +87,9 @@ router.post("/api/login", async (req, res) => {
         process.env.JWT_SECRET, 
         {expiresIn: "24h"}
       );
+    }
+    else{
+      throw new Error("invalid account type");
     }
     res.status(200).json({ token: token});
   } catch (err){
