@@ -10,13 +10,16 @@ const answerSchema = new mongoose.Schema({
         required: true,
     },
     //store answers as json object
-    answers: Object,
+    answers: {
+        type: Object,
+        required: true
+    },
     timestamp: {
         type: Date,
         default: Date.now
     }
 });
 
-const Answer = mongoose.model('Surveys', answerSchema);
+const Answer = mongoose.model('Responses', answerSchema);
 
 module.exports = Answer;
