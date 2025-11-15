@@ -1,5 +1,5 @@
 const express = require("express");
-const {create_coordinator, getClientIdFromToken} = require("../crud");
+const {create_coordinator, getClientIdFromToken, delete_coordinator} = require("../crud");
 const Dashboard = require("../models/Dashboard");
 const Answer = require("../models/Answer");
 const Client = require("../models/Client");
@@ -65,8 +65,13 @@ try {
  *       401:
  *         description: Unauthorized
  */
-router.delete("/api/coordinators/me", (req, res) => {
-  res.sendStatus(204);
+router.delete("/api/coordinators/me", async (req, res) => {
+  try {
+    const deletedClient = await delete_coordinator(req, res);
+    res.status(204).json({ message:"Coordinator Deleted", client: deletedClient});
+  } catch (err){
+    res.status(401).json({ message: "Deletion Failed", error: err.message});
+  }
 });
 
 /**
